@@ -12,7 +12,13 @@ const CITY_OPTIONS = [
   { label: "Chicago, IL", value: "Chicago, IL" },
   { label: "Houston, TX", value: "Houston, TX" },
   { label: "Miami, FL", value: "Miami, FL" },
-  { label: "Seattle, WA", value: "Seattle, WA" },
+  { label: "Norfolk, VA", value: "Norfolk, VA" },
+  { label: "Charleston, SC", value: "Charleston, SC" },
+  { label: "Atlanta, GA", value: "Atlanta, GA" },
+  { label: "Charlotte, NC", value: "Charlotte, NC" },
+  { label: "Las Vegas, NV", value: "Las Vegas, NV" },
+  { label: "Portland, OR", value: "Portland, OR" },
+  { label: "Juneau, AK", value: "Juneau, AK" },
 ];
 
 const CUISINE_OPTIONS = [
@@ -32,6 +38,8 @@ export default function App() {
   const [error, setError] = useState("");
   const [restaurants, setRestaurants] = useState([]);
 
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080";
+
   const canSearch = useMemo(() => city.trim().length > 0, [city]);
 
   const scrollToGetStarted = () => {
@@ -40,8 +48,6 @@ export default function App() {
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // This calls YOUR backend (or serverless function) later.
-  // For now it will work if you implement /api/search.
   const search = async () => {
     if (!canSearch) return;
 
@@ -55,13 +61,13 @@ export default function App() {
         cuisine,
       }).toString();
 
-      const res = await fetch(`/api/search?${qs}`);
+      const res = await fetch(`${API_BASE}/api/search?${qs}`);
+
       const data = await res.json();
 
       if (!res.ok)
         throw new Error(data?.message || "Failed to fetch restaurants");
 
-      // Expecting: { restaurants: [{ id, name, rating, address, lat, lng, price, phone, imageUrl }] }
       setRestaurants(data.restaurants || []);
     } catch (e) {
       setError(e.message || "Something went wrong");
