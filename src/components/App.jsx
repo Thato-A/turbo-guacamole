@@ -5,6 +5,7 @@ import Cuisines from "./Cuisines";
 import WhyChoose from "./WhyChoose";
 import GetStarted from "./GetStarted";
 import Results from "./Results";
+import Footer from "./Footer";
 
 const CITY_OPTIONS = [
   { label: "New York, NY", value: "New York, NY" },
@@ -98,6 +99,7 @@ export default function App() {
         />
 
         <Results restaurants={restaurants} loading={loading} error={error} />
+        <Footer />
       </main>
     </div>
   );
